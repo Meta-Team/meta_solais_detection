@@ -10,7 +10,7 @@
 #include <array>
 #include <atomic>
 
-namespace irmv_detection
+namespace metav_detection
 {
 template <typename Buffer>
 class TripleBuffer
@@ -47,6 +47,6 @@ private:
   // Note that we used std::atomic waiting from C++20 here, so we don't need to use a mutex and a condition variable.
   std::atomic<bool> consumer_ready_ = false;
 };
-}  // namespace irmv_detection
+}  // namespace metav_detection
 
 #endif  // TRIPLE_BUFFER_HPP_

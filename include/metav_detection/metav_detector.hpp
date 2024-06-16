@@ -3,19 +3,19 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <auto_aim_interfaces/msg/armors.hpp>
+#include <metav_interfaces/msg/armors.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.hpp>
 #include <sensor_msgs/msg/image.hpp>
 #include <std_msgs/msg/float64.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 
-#include "irmv_detection/armor.hpp"
-#include "irmv_detection/camera.hpp"
-#include "irmv_detection/pnp_solver.hpp"
-#include "irmv_detection/yolo_engine.hpp"
+#include "metav_detection/armor.hpp"
+#include "metav_detection/camera.hpp"
+#include "metav_detection/pnp_solver.hpp"
+#include "metav_detection/yolo_engine.hpp"
 
-namespace irmv_detection
+namespace metav_detection
 {
 class IrmDetector
 {
@@ -40,7 +40,7 @@ private:
 
   std::array<std::unique_ptr<YoloEngine>, 3> yolo_engines_;
   std::unique_ptr<PnPSolver> pnp_solver_;
-  rclcpp::Publisher<auto_aim_interfaces::msg::Armors>::SharedPtr armors_pub_;
+  rclcpp::Publisher<metav_interfaces::msg::Armors>::SharedPtr armors_pub_;
   rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr param_event_handle_;
 
   // Parameters
@@ -77,4 +77,4 @@ private:
   // Integrated Camera Driver
   std::unique_ptr<Camera> camera_;
 };
-}  // namespace irmv_detection
+}  // namespace metav_detection

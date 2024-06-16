@@ -8,9 +8,9 @@
 #include <nppdefs.h>
 #include <opencv2/opencv.hpp>
 
-#include "irmv_detection/armor.hpp"
+#include "metav_detection/armor.hpp"
 
-namespace irmv_detection
+namespace metav_detection
 {
 using namespace nvinfer1;
 class YoloEngine
@@ -71,4 +71,4 @@ private:
   std::chrono::duration<double, std::milli> preprocess_time_;
   std::chrono::duration<double, std::milli> inference_time_;
 };
-}  // namespace irmv_detection
+}  // namespace metav_detection

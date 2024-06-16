@@ -2,7 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 
-namespace irmv_detection
+namespace metav_detection
 {
 enum class ArmorClass { B1, B2, B3, B4, B5, BO, BS, R1, R2, R3, R4, R5, RO, RS, UNKNOWN };
 
@@ -75,4 +75,4 @@ struct Armor
   float confidence;
   cv::Point2f center;
 };
-}  // namespace irmv_detection
+}  // namespace metav_detection

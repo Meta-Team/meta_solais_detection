@@ -6,10 +6,10 @@
 
 #include <opencv2/opencv.hpp>
 #include <CameraDefine.h>
-#include "irmv_detection/triple_buffer.hpp"
+#include "metav_detection/triple_buffer.hpp"
 #include <chrono>
 
-namespace irmv_detection
+namespace metav_detection
 {
 class Camera
 {
@@ -77,4 +77,4 @@ private:
   std::atomic<bool> shutdown_ = false;
   std::jthread receive_thread_;
 };
-}  // namespace irmv_detection
+}  // namespace metav_detection

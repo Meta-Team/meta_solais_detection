@@ -13,25 +13,25 @@
 #include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
-#include "irmv_detection/armor.hpp"
-#include "irmv_detection/irm_detector.hpp"
-#include "irmv_detection/magic_enum.hpp"
-#include "irmv_detection/yolo_engine.hpp"
+#include "metav_detection/armor.hpp"
+#include "metav_detection/metav_detector.hpp"
+#include "metav_detection/magic_enum.hpp"
+#include "metav_detection/yolo_engine.hpp"
 
 constexpr bool ALLOW_DEBUG_AND_PROFILING = true;
 
-namespace irmv_detection
+namespace metav_detection
 {
 IrmDetector::IrmDetector(const rclcpp::NodeOptions & options)
 {
-  node_ = std::make_shared<rclcpp::Node>("irmv_detector", options);
+  node_ = std::make_shared<rclcpp::Node>("metav_detector", options);
 
   // Declare parameters
   declare_parameters();
 
   // Initialize YOLO engine
   auto model_path =
-    ament_index_cpp::get_package_share_directory("irmv_detection") + "/models/yolov7.onnx";
+    ament_index_cpp::get_package_share_directory("metav_detection") + "/models/yolov7.onnx";
   for (int i = 0; i < 3; i++) {
     yolo_engines_[i] =
       std::make_unique<YoloEngine>(model_path, image_input_size_, enable_profiling_);
@@ -42,7 +42,7 @@ IrmDetector::IrmDetector(const rclcpp::NodeOptions & options)
   auto camera_info_manager =
     std::make_unique<camera_info_manager::CameraInfoManager>(node_.get(), "mv_camera");
   auto camera_info_url = node_->declare_parameter(
-    "camera_info_url", std::string("package://irmv_detection/config/camera_info.yaml"));
+    "camera_info_url", std::string("package://metav_detection/config/camera_info.yaml"));
   if (!camera_info_manager->validateURL(camera_info_url)) {
     RCLCPP_ERROR(node_->get_logger(), "Invalid camera info URL");
     exit(0);
@@ -58,7 +58,7 @@ IrmDetector::IrmDetector(const rclcpp::NodeOptions & options)
     std::bind_front(&IrmDetector::param_event_callback, this));
 
   // Initialize publishers and subscribers
-  armors_pub_ = node_->create_publisher<auto_aim_interfaces::msg::Armors>(
+  armors_pub_ = node_->create_publisher<metav_interfaces::msg::Armors>(
     "/detector/armors", rclcpp::SensorDataQoS());
   if constexpr (ALLOW_DEBUG_AND_PROFILING) {
     create_debug_publishers();
@@ -192,7 +192,7 @@ void IrmDetector::message_callback(Camera::StampedImage & image)
   std_msgs::msg::Header header;
   header.stamp = time_stamp_ros;
   header.frame_id = "camera_optical_frame";
-  auto_aim_interfaces::msg::Armors armors_msg;
+  metav_interfaces::msg::Armors armors_msg;
   armors_msg.header = header;
   if (enable_rviz_) {
     armor_marker_.header = header;
@@ -208,7 +208,7 @@ void IrmDetector::message_callback(Camera::StampedImage & image)
       continue;
     }
 
-    auto_aim_interfaces::msg::Armor armor_msg;
+    metav_interfaces::msg::Armor armor_msg;
 
     // Fill in pose
     armor_msg.pose.position.x = tvec.at<double>(0);
@@ -401,11 +401,11 @@ rcl_interfaces::msg::SetParametersResult IrmDetector::param_event_callback(
   }
   return result;
 }
-}  // namespace irmv_detection
+}  // namespace metav_detection
 
 #include "rclcpp_components/register_node_macro.hpp"
 
 // Register the component with class_loader.
 // This acts as a sort of entry point, allowing the component to be discoverable when its library
 // is being loaded into a running process.
-RCLCPP_COMPONENTS_REGISTER_NODE(irmv_detection::IrmDetector)
+RCLCPP_COMPONENTS_REGISTER_NODE(metav_detection::IrmDetector)

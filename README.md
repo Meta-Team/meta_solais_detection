@@ -4,6 +4,8 @@ A hardware-accelerated (for NVIDIA GPUs) armor detection ROS2 node for RoboMaste
 ## Requirements
 - ROS2 Humble
 - JetPack 6
+- TensorRT >= 8.6
+- CUDA >= 12.0
 
 ## Performance Benchmark
 |                Model                 | Input Size | Inference Time* <br> (Jetson Orin Nano 8GB) | Inference Time* <br> (RTX 3060 Laptop 115W) |

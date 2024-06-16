@@ -4,9 +4,9 @@
 #include <CameraDefine.h>
 
 #include "CameraStatus.h"
-#include "irmv_detection/camera.hpp"
+#include "metav_detection/camera.hpp"
 
-namespace irmv_detection
+namespace metav_detection
 {
 
 // The pContext is a workaround for the callback function.
@@ -125,4 +125,4 @@ void MVCamera::receive_thread()
   }
 }
 
-}  // namespace irmv_detection
+}  // namespace metav_detection

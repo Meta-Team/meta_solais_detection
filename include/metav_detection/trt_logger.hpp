@@ -6,7 +6,7 @@
 
 using namespace nvinfer1;
 
-namespace irmv_detection
+namespace metav_detection
 {
 class Logger : public ILogger
 {
@@ -18,4 +18,4 @@ public:
   }
 };
 
-}  // namespace irmv_detection
+}  // namespace metav_detection

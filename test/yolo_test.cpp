@@ -7,19 +7,19 @@
 #include <opencv2/imgproc.hpp>
 
 #include "gtest/gtest.h"
-#include "irmv_detection/magic_enum.hpp"
-#include "irmv_detection/yolo_engine.hpp"
+#include "metav_detection/magic_enum.hpp"
+#include "metav_detection/yolo_engine.hpp"
 
 
-TEST(irmv_detection, yolo_engine_demo)
+TEST(metav_detection, yolo_engine_demo)
 {
   cudaSetDevice(0);
   std::string model_path =
-    ament_index_cpp::get_package_share_directory("irmv_detection") + "/models/yolov7.onnx";
-  irmv_detection::YoloEngine yolo_engine(model_path, cv::Size(1280, 1024));
+    ament_index_cpp::get_package_share_directory("metav_detection") + "/models/yolov7.onnx";
+  metav_detection::YoloEngine yolo_engine(model_path, cv::Size(1280, 1024));
 
   std::string image_path =
-    ament_index_cpp::get_package_share_directory("irmv_detection") + "/test/rm_test.jpg";
+    ament_index_cpp::get_package_share_directory("metav_detection") + "/test/rm_test.jpg";
 
   cv::Mat image = cv::imread(image_path);
   cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
@@ -27,7 +27,7 @@ TEST(irmv_detection, yolo_engine_demo)
 
   uint8_t * src_image_buffer = yolo_engine.get_src_image_buffer();
   memcpy(src_image_buffer, image.data, image.total() * image.elemSize());
-  std::vector<irmv_detection::YoloEngine::bbox> bboxes = yolo_engine.detect();
+  std::vector<metav_detection::YoloEngine::bbox> bboxes = yolo_engine.detect();
 
   std::cout << "bboxes.size(): " << bboxes.size() << std::endl;
 
@@ -50,15 +50,15 @@ TEST(irmv_detection, yolo_engine_demo)
   cv::destroyAllWindows();
 }
 
-TEST(irmv_detection, yolo_engine_benchmark)
+TEST(metav_detection, yolo_engine_benchmark)
 {
   cudaSetDevice(0);
   std::string model_path =
-    ament_index_cpp::get_package_share_directory("irmv_detection") + "/models/yolov7.onnx";
-  irmv_detection::YoloEngine yolo_engine(model_path, cv::Size(1280, 1024), false);
+    ament_index_cpp::get_package_share_directory("metav_detection") + "/models/yolov7.onnx";
+  metav_detection::YoloEngine yolo_engine(model_path, cv::Size(1280, 1024), false);
 
   std::string image_path =
-    ament_index_cpp::get_package_share_directory("irmv_detection") + "/test/rm_test.jpg";
+    ament_index_cpp::get_package_share_directory("metav_detection") + "/test/rm_test.jpg";
 
   cv::Mat image = cv::imread(image_path);
 
@@ -68,7 +68,7 @@ TEST(irmv_detection, yolo_engine_benchmark)
   uint8_t * src_image_buffer = yolo_engine.get_src_image_buffer();
   for (int i = 0; i < 100; i++) {
     memcpy(src_image_buffer, image.data, image.total() * image.elemSize());
-    std::vector<irmv_detection::YoloEngine::bbox> bboxes = yolo_engine.detect();
+    std::vector<metav_detection::YoloEngine::bbox> bboxes = yolo_engine.detect();
   }
 
   std::vector<double> avg_times;
@@ -79,7 +79,7 @@ TEST(irmv_detection, yolo_engine_benchmark)
 
     for (int i = 0; i < 10; i++) {
       memcpy(src_image_buffer, image.data, image.total() * image.elemSize());
-      std::vector<irmv_detection::YoloEngine::bbox> bboxes = yolo_engine.detect();
+      std::vector<metav_detection::YoloEngine::bbox> bboxes = yolo_engine.detect();
     }
 
     std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();

@@ -1,12 +1,12 @@
 
-#include "irmv_detection/camera.hpp"
+#include "metav_detection/camera.hpp"
 #include <chrono>
 #include <memory>
 #include <stdexcept>
 
 #include <fmt/format.h>
 
-namespace irmv_detection
+namespace metav_detection
 {
 VirtualCamera::VirtualCamera(
   const Config & config, const std::string & video_path, const CameraCallback & callback, int fps)
@@ -89,4 +89,4 @@ VirtualCamera::~VirtualCamera()
   stream_thread_.join();
   triple_buffer_->producer_commit();  // Commit a dummy to wake up the consumer thread
 }
-}  // namespace irmv_detection
+}  // namespace metav_detection

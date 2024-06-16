@@ -1,8 +1,8 @@
 #include <vector>
 
-#include "irmv_detection/pnp_solver.hpp"
+#include "metav_detection/pnp_solver.hpp"
 
-namespace irmv_detection
+namespace metav_detection
 {
 PnPSolver::PnPSolver(
   const std::array<double, 9> & camera_matrix, const std::vector<double> & dist_coeffs)
@@ -58,4 +58,4 @@ float PnPSolver::calculateDistanceToCenter(const cv::Point2f & image_point)
   return cv::norm<float>(image_point - cv::Point2f(cx, cy));
 }
 
-}  // namespace irmv_detection
+}  // namespace metav_detection

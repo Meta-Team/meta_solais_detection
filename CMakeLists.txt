@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(irmv_detection)
+project(metav_detection)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -15,7 +15,7 @@ find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
 # importing CUDA
-set(CUDA_MIN_VERSION "11.4")
+set(CUDA_MIN_VERSION "12.0")
 find_package(CUDA REQUIRED)
 if( ${CUDA_VERSION} GREATER_EQUAL 11.8)
   set(CMAKE_CUDA_ARCHITECTURES "89;87;86;80;75;72;70;61;60")
@@ -23,39 +23,39 @@ else()
   set(CMAKE_CUDA_ARCHITECTURES "87;86;80;75;72;70;61;60")
 endif()
 
-# irmv_detection
-ament_auto_add_library(irmv_detection SHARED
-  src/irm_detector.cpp
+# metav_detection
+ament_auto_add_library(${PROJECT_NAME} SHARED
+  src/metav_detector.cpp
   src/yolo_engine.cpp
   src/pnp_solver.cpp
   src/camera.cpp
   src/mv_camera.cpp
 )
-ament_target_dependencies(irmv_detection
+ament_target_dependencies(${PROJECT_NAME}
   rclcpp
   rclcpp_components
   sensor_msgs
   OpenCV
   cv_bridge
   image_transport
-  auto_aim_interfaces
+  metav_interfaces
   tf2_geometry_msgs
   tf2
   camera_info_manager
   visualization_msgs
 )
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
-  target_link_directories(irmv_detection PUBLIC
+  target_link_directories(metav_detection PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/mvsdk/lib/arm64
   )
 elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
-  target_link_directories(irmv_detection PUBLIC
+  target_link_directories(metav_detection PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/mvsdk/lib/amd64
   )
 else ()
   message(FATAL_ERROR "Unsupported platform")
 endif()
-target_link_libraries(irmv_detection
+target_link_libraries(${PROJECT_NAME}
   nvinfer
   nvonnxparser
   nvinfer_plugin
@@ -66,15 +66,15 @@ target_link_libraries(irmv_detection
   MVSDK
   fmt
 )
-target_include_directories(irmv_detection PUBLIC
+target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
   ${CUDA_INCLUDE_DIRS}
   ${CMAKE_CURRENT_SOURCE_DIR}/mvsdk/include
 )
-rclcpp_components_register_node(irmv_detection 
-  PLUGIN "irmv_detection::IrmDetector"
-  EXECUTABLE irmv_detector
+rclcpp_components_register_node(${PROJECT_NAME} 
+  PLUGIN "metav_detection::IrmDetector"
+  EXECUTABLE metav_detector
 )
 
 if(BUILD_TESTING)
@@ -89,23 +89,23 @@ if(BUILD_TESTING)
   # ament_lint_auto_find_test_dependencies()
 
   find_package(ament_cmake_gtest REQUIRED)
-  ament_add_gtest(irmv_detection_yolo_test
+  ament_add_gtest(metav_detection_yolo_test
     test/yolo_test.cpp
   )
-  target_link_libraries(irmv_detection_yolo_test
-    irmv_detection
+  target_link_libraries(metav_detection_yolo_test
+    metav_detection
   )
-  ament_add_gtest(irmv_detection_camera_test
+  ament_add_gtest(metav_detection_camera_test
     test/camera_test.cpp
   )
-  target_link_libraries(irmv_detection_camera_test
-    irmv_detection
+  target_link_libraries(metav_detection_camera_test
+    metav_detection
   )
-  ament_add_gtest(irmv_detection_triple_buffer_test
+  ament_add_gtest(metav_detection_triple_buffer_test
     test/triple_buffer_test.cpp
   )
-  target_link_libraries(irmv_detection_triple_buffer_test
-    irmv_detection
+  target_link_libraries(metav_detection_triple_buffer_test
+    metav_detection
   )
 endif()
 

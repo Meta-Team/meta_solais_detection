@@ -5,7 +5,7 @@
 
 #include <fmt/format.h>
 
-#include "irmv_detection/triple_buffer.hpp"
+#include "metav_detection/triple_buffer.hpp"
 
 std::atomic<bool> stop_program = false;
 void stop_program_callback(int sig)
@@ -14,10 +14,10 @@ void stop_program_callback(int sig)
   stop_program = true;
 }
 
-TEST(irmv_detection, triple_buffer_basic)
+TEST(metav_detection, triple_buffer_basic)
 {
   std::array<int, 3> buffers = {0, 0, 0};
-  irmv_detection::TripleBuffer triple_buffer(buffers);
+  metav_detection::TripleBuffer triple_buffer(buffers);
   auto producer = [&triple_buffer]() {
     int i = 0;
     while (!stop_program) {
@@ -42,12 +42,12 @@ TEST(irmv_detection, triple_buffer_basic)
   std::jthread consumer_thread(consumer);
 }
 
-TEST(irmv_detection, triple_buffer_fps)
+TEST(metav_detection, triple_buffer_fps)
 {
   constexpr int producer_fps = 100;
   constexpr int consumer_fps = 100;
   std::array<int, 3> buffers = {0, 0, 0};
-  irmv_detection::TripleBuffer triple_buffer(buffers);
+  metav_detection::TripleBuffer triple_buffer(buffers);
   auto producer = [&triple_buffer]() {
     namespace chrono = std::chrono;
     auto interval = chrono::milliseconds(1000 / producer_fps);

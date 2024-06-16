@@ -5,9 +5,9 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "irmv_detection/armor.hpp"
+#include "metav_detection/armor.hpp"
 
-namespace irmv_detection
+namespace metav_detection
 {
 class PnPSolver
 {
@@ -37,4 +37,4 @@ private:
   std::vector<cv::Point3d> large_armor_points_;
 };
 
-}  // namespace irmv_detection
+}  // namespace metav_detection

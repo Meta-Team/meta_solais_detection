@@ -9,13 +9,13 @@
 #include <npp.h>
 #include <opencv2/opencv.hpp>
 
-#include "irmv_detection/magic_enum.hpp"
-#include "irmv_detection/trt_logger.hpp"
-#include "irmv_detection/yolo_engine.hpp"
+#include "metav_detection/magic_enum.hpp"
+#include "metav_detection/trt_logger.hpp"
+#include "metav_detection/yolo_engine.hpp"
 
 using namespace nvinfer1;
 
-namespace irmv_detection
+namespace metav_detection
 {
 static Logger gLogger;
 
@@ -220,7 +220,7 @@ std::vector<YoloEngine::bbox> YoloEngine::parse_output(float scale_x, float scal
 }
 
 void YoloEngine::visualize_bboxes(
-  cv::Mat & image, const std::vector<irmv_detection::YoloEngine::bbox> & bboxes) const
+  cv::Mat & image, const std::vector<metav_detection::YoloEngine::bbox> & bboxes) const
 {
   if (image.cols != src_image_size_.width || image.rows != src_image_size_.height) {
     std::cerr << "[YoloEngine::visualize_bboxes] Image size mismatch" << std::endl;
@@ -242,4 +242,4 @@ void YoloEngine::visualize_bboxes(
   }
 }
 
-}  // namespace irmv_detection
+}  // namespace metav_detection
