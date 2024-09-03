@@ -1,4 +1,4 @@
-# irmv_detection
+# meta_solais_detection
 A hardware-accelerated (for NVIDIA GPUs) armor detection ROS2 node for RoboMaster competition.
 
 ## Requirements
